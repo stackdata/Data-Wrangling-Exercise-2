@@ -1,0 +1,213 @@
+
+
+> View(titanic3)
+> titanic_original <- titanic3
+> View(titanic_original)
+> View(titanic_original)
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> n_distinct(titanic_original)
+[1] 1309
+> n_distinct(titanic_original, embarked)
+Error in n_distinct_multi(list(...), na.rm) : object 'embarked' not found
+> n_distinct(titanic_original(embarked))
+Error in titanic_original(embarked) : 
+  could not find function "titanic_original"
+> select distinct(titanic_original, embarked)
+Error: unexpected symbol in "select distinct"
+> SELECT DISTINCT embarked
+Error: unexpected symbol in "SELECT DISTINCT"
+> FROM titanic_original
+Error: unexpected symbol in "FROM titanic_original"
+> SELECT DISTINCT embarked
+Error: unexpected symbol in "SELECT DISTINCT"
+>   FROM titanic_original
+Error: unexpected symbol in "  FROM titanic_original"
+> titanic_original %>% 
++   select(survived, embarked) %>% 
++   distinct
+# A tibble: 7 x 2
+  survived embarked
+     <dbl> <chr>   
+1       1. S       
+2       0. S       
+3       0. C       
+4       1. C       
+5       1. NA      
+6       0. Q       
+7       1. Q       
+> titanic_ip <- titanic_original %>% 
++   mutate(embarked = ifelse(grepl(" ", embarked, ignore.case = TRUE), "S", embarked)) %>% 
++   mutate(embarked = ifelse(grepl(NA, embarked, ignore.case = TRUE), "S", embarked))
+> titanic_ip %>% 
++   select(survived, embarked) %>% 
++   distinct
+# A tibble: 2 x 2
+  survived embarked
+     <dbl> <lgl>   
+1       1. NA      
+2       0. NA      
+> View(titanic_ip)
+> View(titanic_ip)
+> titanic_ip <- titanic_original %>% 
++   mutate(embarked = ifelse(grepl(" ", embarked, ignore.case = TRUE), "S", embarked)) %>% 
++   mutate(embarked = ifelse(grepl("NA", embarked, ignore.case = TRUE), "S", embarked))
+> titanic_ip %>% 
++   select(survived, embarked) %>% 
++   distinct
+# A tibble: 7 x 2
+  survived embarked
+     <dbl> <chr>   
+1       1. S       
+2       0. S       
+3       0. C       
+4       1. C       
+5       1. NA      
+6       0. Q       
+7       1. Q       
+> titanic_ip <- titanic_original %>% 
++   mutate(embarked = ifelse(grepl(" ", embarked, ignore.case = TRUE), "S", embarked)) %>% 
++   mutate(embarked = ifelse(grepl(is.na, embarked, ignore.case = TRUE), "S", embarked))
+Error in mutate_impl(.data, dots) : 
+  Evaluation error: cannot coerce type 'builtin' to vector of type 'character'.
+> titanic_ip <- titanic_original %>% 
++   mutate(embarked = ifelse(grepl(" ", embarked, ignore.case = TRUE), "S", embarked)) %>% 
++   mutate(embarked = ifelse(grepl(is.na(x), embarked, ignore.case = TRUE), "S", embarked))
+Error in mutate_impl(.data, dots) : 
+  Evaluation error: object 'x' not found.
+> titanic_ip <- titanic_original %>% 
++   mutate(embarked = ifelse(grepl(" ", embarked, ignore.case = TRUE), "S", embarked)) %>% 
++   mutate(embarked = ifelse(grepl(is.na(embarked), embarked, ignore.case = TRUE), "S", embarked))
+Warning message:
+In grepl(is.na(embarked), embarked, ignore.case = TRUE) :
+  argument 'pattern' has length > 1 and only the first element will be used
+> titanic_ip %>% 
++   select(survived, embarked) %>% 
++   distinct
+# A tibble: 7 x 2
+  survived embarked
+     <dbl> <chr>   
+1       1. S       
+2       0. S       
+3       0. C       
+4       1. C       
+5       1. NA      
+6       0. Q       
+7       1. Q       
+> titanic_ip <- titanic_original %>% 
++   mutate(embarked = ifelse(grepl(" ", embarked, ignore.case = TRUE, in.na = TRUE), "S", embarked))
+Error in mutate_impl(.data, dots) : 
+  Evaluation error: unused argument (in.na = TRUE).
+> titanic_ip <- titanic_original %>% 
++   replace_na(embarked("S"))
+Error in embarked("S") : could not find function "embarked"
+> titanic_ip <- titanic_original %>% 
++   replace_na(embarked, "S")
+Error in is_list(replace) : object 'embarked' not found
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(embarked = "S"))
+> titanic_ip %>% 
++   select(survived, embarked) %>% 
++   distinct
+# A tibble: 6 x 2
+  survived embarked
+     <dbl> <chr>   
+1       1. S       
+2       0. S       
+3       0. C       
+4       1. C       
+5       0. Q       
+6       1. Q       
+> titanic_ip %>% 
++   mean(age)
+[1] NA
+Warning message:
+In mean.default(., age) : argument is not numeric or logical: returning NA
+> titanic_ip %>% 
++   mean(age, na.rm = TRUE)
+[1] NA
+Warning message:
+In mean.default(., age, na.rm = TRUE) :
+  argument is not numeric or logical: returning NA
+> titanic_ip %>% 
++   mean(age, na.rm = FALSE)
+[1] NA
+Warning message:
+In mean.default(., age, na.rm = FALSE) :
+  argument is not numeric or logical: returning NA
+> titanic_ip %>% 
++   summarise(avg_age = mean(age, na.rm = TRUE))
+# A tibble: 1 x 1
+  avg_age
+    <dbl>
+1    29.9
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(age = 30))
+> 
+> 
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(boat = "NONE"))
+> 
+> 
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(cabin = "no_number"))
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(age = 30))
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(boat = "NONE"))
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(cabin = "NA"))
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(age = 30))
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(boat = "NONE"))
+> titanic_ip <- titanic_original %>% 
++   replace_na(list(age = 30))
+> titanic_ip <- titanic_ip %>% 
++   replace_na(list(boat = "NONE"))
+> titanic_ip <- titanic_ip %>% 
++   replace_na(list(cabin = "NA"))
+> titanic_ip <- titanic_ip %>% 
++   mutate(has_cabin_number = ifelse(grepl("NA", cabin), 0, 1))
+> titanic_ip %>% 
++   select(survived, embarked) %>% 
++   distinct
+# A tibble: 7 x 2
+  survived embarked
+     <dbl> <chr>   
+1       1. S       
+2       0. S       
+3       0. C       
+4       1. C       
+5       1. NA      
+6       0. Q       
+7       1. Q       
+> titanic_ip <- titanic_ip %>% 
++   replace_na(list(embarked = "S"))
+> titanic_ip %>% 
++   select(survived, embarked) %>% 
++   distinct
+# A tibble: 6 x 2
+  survived embarked
+     <dbl> <chr>   
+1       1. S       
+2       0. S       
+3       0. C       
+4       1. C       
+5       0. Q       
+6       1. Q 
